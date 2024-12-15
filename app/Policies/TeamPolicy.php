@@ -64,6 +64,12 @@ class TeamPolicy
 
     public function changeMemberRole(User $user, Team $team, User $member)
     {
+        if ($user->id === $member->id) {
+            return $team->members->filter(function ($teamMember) {
+                    return $teamMember->hasRole('team admin');
+                })->count() >= 2;
+        }
+
         if ($team->members->doesntContain($member)) {
             return false;
         }

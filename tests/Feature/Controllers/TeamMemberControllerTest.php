@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\TeamsPermission;
 use App\Models\User;
+
 use function Pest\Laravel\actingAs;
 
 it('can remove a member from the team', function () {
@@ -62,7 +63,7 @@ it('updates a role', function () {
 
     actingAs($user)
         ->patch(route('team.members.update', [$user->currentTeam, $member]), [
-            'role' => 'team admin'
+            'role' => 'team admin',
         ])
         ->assertRedirect();
 
@@ -103,7 +104,7 @@ it('does not update the role if no permission', function () {
     actingAs($anotherUser)
         ->withoutMiddleware(TeamsPermission::class)
         ->patch(route('team.members.update', [$user->currentTeam, $user]), [
-            'role' => 'team member'
+            'role' => 'team member',
         ])
         ->assertForbidden();
 });
@@ -114,7 +115,7 @@ it('does not update the user if they are not in the team', function () {
 
     actingAs($user)
         ->patch(route('team.members.update', [$user->currentTeam, $anotherUser]), [
-            'role' => 'team member'
+            'role' => 'team member',
         ])
         ->assertForbidden();
 });
@@ -131,7 +132,7 @@ it('validates the role to make sure it exists', function () {
 
     actingAs($user)
         ->patch(route('team.members.update', [$user->currentTeam, $member]), [
-            'role' => 'some wrong role'
+            'role' => 'some wrong role',
         ])
         ->assertInvalid()
         ->assertSessionHasErrors(['role']);

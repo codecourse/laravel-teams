@@ -14,7 +14,7 @@ class TeamPolicy
 
     public function update(User $user, Team $team)
     {
-        if (!$user->teams->contains($team)) {
+        if (! $user->teams->contains($team)) {
             return false;
         }
 
@@ -23,7 +23,7 @@ class TeamPolicy
 
     public function leave(User $user, Team $team)
     {
-        if (!$user->teams->contains($team)) {
+        if (! $user->teams->contains($team)) {
             return false;
         }
 

@@ -8,12 +8,13 @@ use App\Models\User;
 use Illuminate\Routing\Middleware\ValidateSignature;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\assertDatabaseMissing;
 
 afterEach(function () {
-   Str::createRandomStringsNormally();
+    Str::createRandomStringsNormally();
 });
 
 it('creates an invite', function () {
@@ -25,19 +26,19 @@ it('creates an invite', function () {
 
     actingAs($user)
         ->post(route('team.invites.store', $user->currentTeam), [
-            'email' => $email = 'mabel@codecourse.com'
+            'email' => $email = 'mabel@codecourse.com',
         ])
         ->assertRedirect();
 
     Mail::assertSent(TeamInvitation::class, function (TeamInvitation $mail) use ($email) {
-        return  $mail->hasTo($email) &&
+        return $mail->hasTo($email) &&
                 $mail->teamInvite->token === 'abc';
     });
 
     assertDatabaseHas('team_invites', [
         'team_id' => $user->currentTeam->id,
         'email' => $email,
-        'token' => 'abc'
+        'token' => 'abc',
     ]);
 });
 
@@ -54,7 +55,7 @@ it('requires an valid email address', function () {
 
     actingAs($user)
         ->post(route('team.invites.store', $user->currentTeam), [
-            'email' => 'abc'
+            'email' => 'abc',
         ])
         ->assertSessionHasErrors('email');
 });
@@ -64,12 +65,12 @@ it('fails to create invite if email already used', function () {
 
     TeamInvite::factory()->create([
         'team_id' => $user->currentTeam->id,
-        'email' => $email = 'mabel@codecourse.com'
+        'email' => $email = 'mabel@codecourse.com',
     ]);
 
     actingAs($user)
         ->post(route('team.invites.store', $user->currentTeam), [
-            'email' => $email
+            'email' => $email,
         ])
         ->assertInvalid();
 });
@@ -80,12 +81,12 @@ it('creates invite if email already invited to another team', function () {
     TeamInvite::factory()
         ->for(Team::factory())
         ->create([
-            'email' => $email = 'mabel@codecourse.com'
+            'email' => $email = 'mabel@codecourse.com',
         ]);
 
     actingAs($user)
         ->post(route('team.invites.store', $user->currentTeam), [
-            'email' => $email
+            'email' => $email,
         ])
         ->assertValid();
 });
@@ -102,7 +103,7 @@ it('fails to send invite without permission', function () {
     actingAs($user)
         ->withoutMiddleware(TeamsPermission::class)
         ->post(route('team.invites.store', $anotherTeam), [
-            'email' => 'mabel@codecourse.com'
+            'email' => 'mabel@codecourse.com',
         ])
         ->assertForbidden();
 });
@@ -111,7 +112,7 @@ it('can revoke an invite', function () {
     $user = User::factory()->create();
 
     $invite = TeamInvite::factory()->create([
-        'team_id' => $user->currentTeam->id
+        'team_id' => $user->currentTeam->id,
     ]);
 
     actingAs($user)
@@ -133,7 +134,7 @@ it('can not revoke an invite without permission', function () {
     );
 
     $invite = TeamInvite::factory()->create([
-        'team_id' => $anotherTeam->id
+        'team_id' => $anotherTeam->id,
     ]);
 
     setPermissionsTeamId($anotherTeam);
@@ -152,7 +153,7 @@ it('fails to accept invite if route is not signed', function () {
     $acceptingUser = User::factory()->create();
 
     actingAs($acceptingUser)
-        ->get('/team/invites/accept?token=' . $invite->token)
+        ->get('/team/invites/accept?token='.$invite->token)
         ->assertForbidden();
 });
 
@@ -165,7 +166,7 @@ it('can accept an invite', function () {
 
     actingAs($acceptingUser)
         ->withoutMiddleware(ValidateSignature::class)
-        ->get('/team/invites/accept?token=' . $invite->token)
+        ->get('/team/invites/accept?token='.$invite->token)
         ->assertRedirect('/dashboard');
 
     expect($acceptingUser->teams->contains($invite->team))->toBeTrue()

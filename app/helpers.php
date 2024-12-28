@@ -1,7 +1,8 @@
 <?php
 
-if (!function_exists('team')) {
-    function team() {
+if (! function_exists('team')) {
+    function team()
+    {
         return request()->team();
     }
 }

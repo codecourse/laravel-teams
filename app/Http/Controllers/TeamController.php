@@ -20,7 +20,7 @@ class TeamController extends Controller
     public function edit(Request $request)
     {
         return view('team.edit', [
-            'team' => $request->user()->currentTeam
+            'team' => $request->user()->currentTeam,
         ]);
     }
 

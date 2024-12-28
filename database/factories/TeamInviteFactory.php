@@ -18,7 +18,7 @@ class TeamInviteFactory extends Factory
     {
         return [
             'email' => fake()->email,
-            'token' => str()->random(30)
+            'token' => str()->random(30),
         ];
     }
 }

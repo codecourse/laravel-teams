@@ -29,8 +29,8 @@ class TeamInviteStoreRequest extends FormRequest
                 'email',
                 'max:255',
                 Rule::unique(TeamInvite::class, 'email')
-                    ->where('team_id', $this->team->id)
-            ]
+                    ->where('team_id', $this->team->id),
+            ],
         ];
     }
 }

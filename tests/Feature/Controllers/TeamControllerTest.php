@@ -3,7 +3,7 @@
 use App\Http\Middleware\TeamsPermission;
 use App\Models\Team;
 use App\Models\User;
-use http\Env\Request;
+
 use function Pest\Laravel\actingAs;
 
 it('switches the current team for the user', function () {
@@ -37,7 +37,7 @@ it('can update team', function () {
 
     actingAs($user)
         ->patch(route('team.update', $user->currentTeam), [
-            'name' => $name = 'A new team name'
+            'name' => $name = 'A new team name',
         ])
         ->assertRedirect();
 
@@ -50,7 +50,7 @@ it('can not update if not in team', function () {
 
     actingAs($user)
         ->patch(route('team.update', $anotherUser->currentTeam), [
-            'name' => 'A new team name'
+            'name' => 'A new team name',
         ])
         ->assertForbidden();
 });
@@ -67,7 +67,7 @@ it('can not update a team without permission', function () {
     actingAs($user)
         ->withoutMiddleware(TeamsPermission::class)
         ->patch(route('team.update', $anotherTeam), [
-            'name' => 'A new team name'
+            'name' => 'A new team name',
         ])
         ->assertForbidden();
 });

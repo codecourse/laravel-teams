@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Project;
+use App\Models\User;
+use App\Models\TeamInvite;
 
 class Team extends Model
 {
@@ -26,4 +29,5 @@ class Team extends Model
     {
         return $this->hasMany(Project::class);
     }
+
 }

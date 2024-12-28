@@ -12,7 +12,13 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: [
+                    '"Inter var", sans-serif',
+                    {
+                        fontFeatureSettings: '"cv11", "ss01"',
+                        fontVariationSettings: '"opsz" 32'
+                    },
+                ],
             },
         },
     },

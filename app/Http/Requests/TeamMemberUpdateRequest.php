@@ -25,8 +25,8 @@ class TeamMemberUpdateRequest extends FormRequest
         return [
             'role' => [
                 'nullable',
-                Rule::exists('roles', 'name')
-            ]
+                Rule::exists('roles', 'name'),
+            ],
         ];
     }
 }

@@ -20,7 +20,7 @@ pest()->extend(Tests\TestCase::class)
     ->beforeEach(function () {
         $this->seed([
             AdminRoleSeeder::class,
-            MemberRoleSeeder::class
+            MemberRoleSeeder::class,
         ]);
     });
 

@@ -16,7 +16,7 @@ class TeamInviteController extends Controller
     {
         $invite = $team->invites()->create([
             'email' => $request->email,
-            'token' => str()->random(30)
+            'token' => str()->random(30),
         ]);
 
         Mail::to($request->email)->send(new TeamInvitation($invite));

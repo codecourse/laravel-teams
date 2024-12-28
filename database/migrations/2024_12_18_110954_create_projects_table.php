@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid')->unique();
             $table->foreignId('team_id')->constrained();
             $table->string('title');
+            $table->decimal('completion_percentage', 5, 2)->default(0);
             $table->timestamps();
         });
     }

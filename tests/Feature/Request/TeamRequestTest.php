@@ -2,7 +2,6 @@
 
 use App\Models\Team;
 use App\Models\User;
-use function Pest\Laravel\actingAs;
 
 it('can access the current team through the request', function () {
     $user = User::factory()->create();

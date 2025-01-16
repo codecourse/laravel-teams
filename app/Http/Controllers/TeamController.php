@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\CreateTeam;
 use App\Http\Requests\SetCurrentTeamRequest;
 use App\Http\Requests\TeamLeaveRequest;
+use App\Http\Requests\TeamStoreRequest;
 use App\Http\Requests\TeamUpdateRequest;
 use App\Models\Team;
 use Illuminate\Http\Request;
@@ -41,5 +43,17 @@ class TeamController extends Controller
         $user->currentTeam()->associate($user->fresh()->teams->first())->save();
 
         return redirect()->route('dashboard');
+    }
+
+    public function create()
+    {
+        return view('team.create');
+    }
+
+    public function store(TeamStoreRequest $request, CreateTeam $createTeam)
+    {
+        $createTeam->handle($request->user(), $request->validated());
+
+        return back();
     }
 }

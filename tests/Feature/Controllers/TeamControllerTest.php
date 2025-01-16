@@ -117,3 +117,19 @@ it('should show a list of members', function () {
         ->assertSeeText($members->pluck('email')->toArray())
         ->assertSeeText($members->pluck('name')->toArray());
 });
+
+it('can create a team', function () {
+    $user = User::factory()->create();
+
+    actingAs($user)
+        ->post(route('team.store'), [
+            'name' => $name = 'A new team'
+        ])
+        ->assertRedirect();
+
+    $user = $user->fresh();
+
+    expect($user->teams)->toHaveCount(2)
+        ->last()->name->toBe($name)
+        ->and($user->currentTeam)->name->toBe($name);
+});

@@ -18,6 +18,12 @@ Route::middleware('auth')->group(function () {
     Route::patch('/teams/{team}/set_current', [TeamController::class, 'setCurrent'])
         ->name('team.set-current');
 
+    Route::get('/team/create', [TeamController::class, 'create'])
+        ->name('team.create');
+
+    Route::post('/team', [TeamController::class, 'store'])
+        ->name('team.store');
+
     Route::get('/team', [TeamController::class, 'edit'])
         ->name('team.edit');
 

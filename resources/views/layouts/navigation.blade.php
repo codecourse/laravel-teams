@@ -65,6 +65,10 @@
                     </x-slot>
 
                     <x-slot name="content">
+                        <x-dropdown-link :href="route('team.create')" class="font-semibold">
+                            Create team
+                        </x-dropdown-link>
+
                         <x-dropdown-link :href="route('team.edit')" class="font-semibold">
                             Team settings
                         </x-dropdown-link>

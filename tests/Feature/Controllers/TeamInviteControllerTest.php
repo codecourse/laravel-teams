@@ -168,7 +168,7 @@ it('can accept an invite', function () {
         ->get('/team/invites/accept?token=' . $invite->token)
         ->assertRedirect('/dashboard');
 
-    expect($acceptingUser->teams->contains($invite->team))->toBeTrue()
+    expect($acceptingUser->fresh()->teams->contains($invite->team))->toBeTrue()
         ->and($acceptingUser->hasRole('team member'))->toBeTrue()
         ->and($acceptingUser->currentTeam->id)->toBe($invite->team_id);
 

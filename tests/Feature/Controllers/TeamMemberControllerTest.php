@@ -70,6 +70,42 @@ it('updates a role', function () {
         ->and($member->roles->count())->toBe(1);
 });
 
+it('can not downgrade own role if no other team admin', function () {
+    $user = User::factory()->create();
+
+    setPermissionsTeamId($user->currentTeam->id);
+
+    actingAs($user)
+        ->patch(route('team.members.update', [$user->currentTeam, $user]), [
+            'role' => 'team member',
+        ])
+        ->assertForbidden();
+
+    expect($user->fresh()->hasRole('team admin'))
+        ->toBeTrue();
+});
+
+it('can downgrade own role if there is another team admin', function () {
+    $user = User::factory()->create();
+
+    $user->currentTeam->members()->attach(
+        $anotherAdmin = User::factory()->createQuietly()
+    );
+
+    $anotherAdmin->assignRole('team admin');
+
+    setPermissionsTeamId($user->currentTeam->id);
+
+    actingAs($user)
+        ->patch(route('team.members.update', [$user->currentTeam, $user]), [
+            'role' => 'team member',
+        ])
+        ->assertRedirect();
+
+    expect($user->fresh()->hasRole('team member'))
+        ->toBeTrue();
+});
+
 it('only updates role if provided', function () {
     $user = User::factory()->create();
 

@@ -57,7 +57,7 @@
                     <x-input-label for="role" value="Role" class="sr-only" />
 
                     <x-select-input class="w-full" name="role" id="role">
-                        @foreach(Role::get() as $role)
+                        @foreach($roles as $role)
                             <option value="{{ $role->name }}" @selected($member->hasRole($role))>{{ $role->name }}</option>
                         @endforeach
                     </x-select-input>

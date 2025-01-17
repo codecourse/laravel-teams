@@ -9,6 +9,7 @@ use App\Http\Requests\TeamStoreRequest;
 use App\Http\Requests\TeamUpdateRequest;
 use App\Models\Team;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 
 class TeamController extends Controller
 {
@@ -22,7 +23,8 @@ class TeamController extends Controller
     public function edit(Request $request)
     {
         return view('team.edit', [
-            'team' => $request->user()->currentTeam
+            'team' => $request->user()->currentTeam->load(['members.roles', 'invites.team']),
+            'roles' => Role::get()
         ]);
     }
 
